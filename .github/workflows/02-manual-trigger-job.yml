@@ -16,6 +16,6 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: Create job
-      run: az ml job create --file src/job.yml --resource-group rg_datatest \ --workspace-name mlw-datatest
+      run: az ml job create --file src/job.yml --resource-group rg_datatest --workspace-name mlw-datatest
 
 

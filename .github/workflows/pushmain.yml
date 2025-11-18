@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
-jobs:  
-  - name: Placeholder
-    run: |
-      echo "Will add code checks here in next challenge"
+jobs:
+  placeholder_job: Job1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder
+        run: |
+          echo "Will add code checks here in next challenge"

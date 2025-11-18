@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-- jobs:  
+jobs:  
   - name: Placeholder
     run: |
       echo "Will add code checks here in next challenge"

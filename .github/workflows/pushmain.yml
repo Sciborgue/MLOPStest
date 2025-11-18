@@ -9,9 +9,45 @@ on:
       - main
       
 jobs:
-  echo1:
+  lint:
+    name: Lint code with Flake8
     runs-on: ubuntu-latest
     steps:
-      - name: Placeholder
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
         run: |
-          echo "Will add code checks here in next challenge"
+          pip install -r requirements.txt
+          pip install flake8
+
+      - name: Run Flake8
+        run: |
+          flake8 .
+
+  tests:
+    name: Run unit tests with Pytest
+    runs-on: ubuntu-latest
+    needs: lint   # optional: run tests only if lint passes
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run Pytest
+        run: |
+          pytest tests/

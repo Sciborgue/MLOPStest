@@ -5,7 +5,7 @@ on:
     branches:
       - main
 jobs:
-  placeholder_job: Job1
+  echo1:
     runs-on: ubuntu-latest
     steps:
       - name: Placeholder

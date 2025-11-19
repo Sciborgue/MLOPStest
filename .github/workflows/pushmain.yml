@@ -57,6 +57,22 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      
+      - name: Enable ML auto extension auto-install
+        run: az config set extension.dynamic_install_allow_preview=true
+
       - name: "training on experiment data"
         run: |
           az ml job create \ 
@@ -71,6 +87,21 @@ jobs:
     needs: experimentation
     if: ${{ needs.A.result == 'success' }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      
+      - name: Enable ML auto extension auto-install
+        run: az config set extension.dynamic_install_allow_preview=true
       - name: "training on production data"
         run: |
           az ml job create \

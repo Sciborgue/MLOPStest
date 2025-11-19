@@ -59,7 +59,7 @@ jobs:
     steps:
       - name: "training on experiment data"
         run: |
-          az ml job create \ 
+          az ml job create \
             --file src/job.yml \
             --resource-group $AZURE_RESOURCE_GROUP \
             --workspace-name $AZURE_WORKSPACE \

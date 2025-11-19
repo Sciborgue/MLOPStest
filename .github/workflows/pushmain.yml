@@ -57,13 +57,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     steps:
-      - name: "training on experiment data"
+      - name: Submit experiment job
         run: |
-          az ml job create \ 
+          az ml job create \
             --file src/job.yml \
-            --resource-group $AZURE_RESOURCE_GROUP \
-            --workspace-name $AZURE_WORKSPACE \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --workspace-name "$AZURE_WORKSPACE" \
             --set inputs.training_data=azureml:diabetes-dev-folder
+
   
   production:
     name: "Production phase"

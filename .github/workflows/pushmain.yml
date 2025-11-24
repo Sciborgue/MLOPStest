@@ -72,6 +72,13 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
 
+      - name: Debug environment variables2
+        run: |
+          echo "RG = [$AZURE_RESOURCE_GROUP]"
+          echo "WS = [$AZURE_WORKSPACE]"
+          echo "Subscription = [$AZURE_SUBSCRIPTION]"
+          az account show || echo "No Azure login"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:

@@ -53,7 +53,7 @@ jobs:
           pytest tests/
 
   experimentation:
-    name: "Experimentation phases"
+    name: "Experimentation phase"
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -89,7 +89,7 @@ jobs:
             --set inputs.training_data=azureml:diabetes-dev-folder
   
   production:
-    name: "Production phases"
+    name: "Production phase"
     runs-on: ubuntu-latest
     environment: production
     needs: experimentation

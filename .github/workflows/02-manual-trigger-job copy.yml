@@ -1,0 +1,28 @@
+name: Manually trigger an Azure Machine Learning job
+
+on:
+  workflow_dispatch:
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+    - name: Debug environment variables
+      run: |
+        echo "RG = [$AZURE_RESOURCE_GROUP]"
+        echo "WS = [$AZURE_WORKSPACE]"
+        echo "Subscription = [$AZURE_SUBSCRIPTION]"
+        az account show || echo "No Azure login"
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_DEV}}
+    - name: Create job
+      run: az ml job create --file src/job.yml --resource-group $AZURE_RESOURCE_GROUP --workspace-name $AZURE_WORKSPACE
+
+

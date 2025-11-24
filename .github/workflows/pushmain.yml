@@ -55,7 +55,7 @@ jobs:
   experimentation:
     name: "Experimentation phase"
     runs-on: ubuntu-latest
-    environment: development
+    environment: Development environment
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -84,7 +84,7 @@ jobs:
   production:
     name: "Production phase"
     runs-on: ubuntu-latest
-    environment: production
+    environment: Production environment
     needs: experimentation
     if: ${{ needs.experimentation.result == 'success' }}
     steps:

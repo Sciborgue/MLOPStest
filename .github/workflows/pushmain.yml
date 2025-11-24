@@ -63,7 +63,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -84,8 +84,9 @@ jobs:
   production:
     name: "Production phase"
     runs-on: ubuntu-latest
+    environment: production
     needs: experimentation
-    if: ${{ needs.A.result == 'success' }}
+    if: ${{ needs.experimentation.result == 'success' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -93,7 +94,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZURE_CREDENTIALS_PROD }}
 
       - name: Set up Python
         uses: actions/setup-python@v5

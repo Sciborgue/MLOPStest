@@ -57,6 +57,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     steps:
+      - name: Debug environment variables
+        run: |
+          echo "RG = [$AZURE_RESOURCE_GROUP]"
+          echo "WS = [$AZURE_WORKSPACE]"
+          echo "Subscription = [$AZURE_SUBSCRIPTION]"
+          az account show || echo "No Azure login"
+
       - name: Checkout repository
         uses: actions/checkout@v4
 

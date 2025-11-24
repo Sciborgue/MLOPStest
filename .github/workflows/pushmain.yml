@@ -7,7 +7,12 @@ on:
   pull_request:
     branches:
       - main
-      
+
+env:
+  AZURE_RESOURCE_GROUP: 'rg-testdiab'
+  AZURE_WORKSPACE: 'mlw-testdiab'
+  AZURE_SUBSCRIPTION: 'd54efa0b-8643-493a-abce-511f6d3fc00b'
+
 jobs:
   lint:
     name: Lint code with Flake8
@@ -74,13 +79,6 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{secrets.AZURE_CREDENTIALS_DEV}}
-
-      - name: Debug environment variables2
-        run: |
-          echo "RG = [$AZURE_RESOURCE_GROUP]"
-          echo "WS = [$AZURE_WORKSPACE]"
-          echo "Subscription = [$AZURE_SUBSCRIPTION]"
-          az account show || echo "No Azure login"
 
       - name: Set up Python
         uses: actions/setup-python@v5

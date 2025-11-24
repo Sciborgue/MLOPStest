@@ -65,12 +65,15 @@ jobs:
           az account show || echo "No Azure login"
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@main
 
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+        
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
+          creds: ${{secrets.AZURE_CREDENTIALS_DEV}}
 
       - name: Debug environment variables2
         run: |
@@ -108,7 +111,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_PROD }}
+          creds: ${{secrets.AZURE_CREDENTIALS_PROD}}
 
       - name: Set up Python
         uses: actions/setup-python@v5

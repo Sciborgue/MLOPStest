@@ -57,6 +57,26 @@ jobs:
         run: |
           pytest tests/
 
+  dataset_creation:
+    name: "Create datasets"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dataset for experimentation
+        run: |
+          az ml data create --name diabetes-exp-folder \
+          --type uri_folder \
+          --path ./experimentation/data \
+          --workspace-name $AZURE_WORKSPACE \
+          --resource-group $AZURE_RESOURCE_GROUP
+
+      - name: Dataset for production
+        run: |
+          az ml data create --name diabetes-dev-folder \
+          --type uri_folder \
+          --path ./production/data \
+          --workspace-name $AZURE_WORKSPACE \
+          --resource-group $AZURE_RESOURCE_GROUP
+
   experimentation:
     name: "Experimentation phase"
     runs-on: ubuntu-latest
@@ -65,6 +85,7 @@ jobs:
       - name: Debug environment variables
         run: |
           echo "RG = [$AZURE_RESOURCE_GROUP]"
+          echo "RG2 = ${{vars.AZURE_RESOURCE_GROUP}}"
           echo "WS = [$AZURE_WORKSPACE]"
           echo "Subscription = [$AZURE_SUBSCRIPTION]"
           az account show || echo "No Azure login"
@@ -94,7 +115,7 @@ jobs:
             --file src/job.yml \
             --resource-group $AZURE_RESOURCE_GROUP \
             --workspace-name $AZURE_WORKSPACE \
-            --set inputs.training_data=./experimentation/data
+            --set inputs.training_data=azureml:diabetes-exp-folder
   
   production:
     name: "Production phase"
@@ -125,4 +146,4 @@ jobs:
             --file src/job.yml \
             --resource-group "$AZURE_RESOURCE_GROUP" \
             --workspace-name $AZURE_WORKSPACE \
-            --set inputs.training_data=./production/data
+            --set inputs.training_data=azureml:diabetes-prod-folder

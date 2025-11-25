@@ -79,7 +79,7 @@ jobs:
 
       - name: Enable ML auto extension auto-install
         run: az config set extension.dynamic_install_allow_preview=true
-        
+
       - name: Dataset for experimentation
         run: |
           az ml data create --name diabetes-exp-folder \
@@ -88,7 +88,7 @@ jobs:
           --workspace-name $AZURE_WORKSPACE \
           --resource-group $AZURE_RESOURCE_GROUP
 
-      - name: Dataset for production
+      - name: Dataset for production 
         run: |
           az ml data create --name diabetes-dev-folder \
           --type uri_folder \

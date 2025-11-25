@@ -79,6 +79,7 @@ jobs:
 
       - name: Enable ML auto extension auto-install
         run: az config set extension.dynamic_install_allow_preview=true
+        
       - name: Dataset for experimentation
         run: |
           az ml data create --name diabetes-exp-folder \
@@ -99,6 +100,8 @@ jobs:
     name: "Experimentation phase"
     runs-on: ubuntu-latest
     environment: development
+    needs: dataset_creation        
+    if: ${{ needs.dataset_creation.result == 'success' }}
     steps:
       - name: Debug environment variables
         run: |

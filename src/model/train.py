@@ -28,10 +28,18 @@ def main(args):
 def get_csvs_df(path):
     if not os.path.exists(path):
         raise RuntimeError(f"Cannot use non-existent path provided: {path}")
-    csv_files = glob.glob(f"{path}/*.csv")
-    if not csv_files:
-        raise RuntimeError(f"No CSV files found in provided data path: {path}")
-    return pd.concat((pd.read_csv(f) for f in csv_files), sort=False)
+
+    # If it's a file, just read it directly
+    if os.path.isfile(path):
+        return pd.read_csv(path)
+
+    # If it's a folder, read all CSVs inside
+    all_files = glob.glob(os.path.join(path, "*.csv"))
+    if not all_files:
+        raise RuntimeError(f"No CSV files found in {path}")
+
+    df_list = [pd.read_csv(f) for f in all_files]
+    return pd.concat(df_list, ignore_index=True)
 
 
 # TO DO: add function to split data

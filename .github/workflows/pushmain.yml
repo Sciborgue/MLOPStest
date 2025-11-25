@@ -60,6 +60,7 @@ jobs:
   dataset_creation:
     name: "Create datasets"
     runs-on: ubuntu-latest
+    environment: experimentation
     steps:
       - name: Checkout repository
         uses: actions/checkout@main
@@ -99,7 +100,7 @@ jobs:
   experimentation:
     name: "Experimentation phase"
     runs-on: ubuntu-latest
-    environment: development
+    environment: experimentation
     needs: dataset_creation        
     if: ${{ needs.dataset_creation.result == 'success' }}
     steps:

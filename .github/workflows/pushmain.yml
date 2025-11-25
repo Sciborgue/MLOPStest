@@ -61,6 +61,24 @@ jobs:
     name: "Create datasets"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+        
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS_DEV}}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Enable ML auto extension auto-install
+        run: az config set extension.dynamic_install_allow_preview=true
       - name: Dataset for experimentation
         run: |
           az ml data create --name diabetes-exp-folder \

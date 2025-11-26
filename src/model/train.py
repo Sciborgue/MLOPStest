@@ -27,28 +27,23 @@ def main(args):
 
 
 def get_csvs_df(path):
-    # Detect if path is an AzureML dataset URI
-    if path.startswith("azureml:"):
-        dataset_name = path.replace("azureml:", "")
-        print(f"Downloading dataset from AzureML: {dataset_name}")
-
-        # Load workspace from environment (AzureML automatically sets these)
-        ws = Workspace.from_config()
-        dataset = Dataset.get_by_name(ws, dataset_name)
-        local_path = dataset.download(target_path="tmp_data", overwrite=True)
-        path = local_path[0] if isinstance(local_path, list) else local_path
+    print(f"Loading training data from: {path}")
 
     if not os.path.exists(path):
-        raise RuntimeError(f"Cannot use non-existent path provided: {path}")
+        raise RuntimeError(f"Path does not exist: {path}")
 
-    if os.path.isfile(path):
+    # If the path is a file, load it directly
+    if os.path.isfile(path) and path.endswith(".csv"):
         return pd.read_csv(path)
 
+    # If directory, load all CSVs
     all_files = glob.glob(os.path.join(path, "*.csv"))
+
     if not all_files:
-        raise RuntimeError(f"No CSV files found in provided data: {path}")
+        raise RuntimeError(f"No CSV files found in directory: {path}")
 
     df_list = [pd.read_csv(f) for f in all_files]
+    print(f"Loaded {len(all_files)} CSV file(s).")
     return pd.concat(df_list, ignore_index=True)
 
 

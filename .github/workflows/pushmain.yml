@@ -137,7 +137,7 @@ jobs:
             --file src/job.yml \
             --resource-group $AZURE_RESOURCE_GROUP \
             --workspace-name $AZURE_WORKSPACE \
-            --set inputs.training_data=azureml:diabetes-exp-folder:@latest
+            --set inputs.training_data=azureml:diabetes-exp-folder:latest
   
   production:
     name: "Production phase"
@@ -168,4 +168,4 @@ jobs:
             --file src/job.yml \
             --resource-group "$AZURE_RESOURCE_GROUP" \
             --workspace-name $AZURE_WORKSPACE \
-            --set inputs.training_data=azureml:diabetes-prod-folder:@latest
+            --set inputs.training_data=azureml:diabetes-prod-folder:latest

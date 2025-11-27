@@ -137,10 +137,9 @@ jobs:
       - name: training on experiment data
         run: |
           az ml job create \
-            --file src/job.yml \
+            --file src/job_exp.yml \
             --resource-group $AZURE_RESOURCE_GROUP \
             --workspace-name $AZURE_WORKSPACE \
-            --set inputs.training_data="azureml:diabetes-exp-folder:latest"
   
   production:
     name: "Production phase"
@@ -168,7 +167,6 @@ jobs:
       - name: training on production data
         run: |
           az ml job create \
-            --file src/job.yml \
+            --file src/job_prod.yml \
             --resource-group "$AZURE_RESOURCE_GROUP" \
             --workspace-name $AZURE_WORKSPACE \
-            --set inputs.training_data="azureml:diabetes-prod-folder:latest"

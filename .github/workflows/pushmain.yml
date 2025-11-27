@@ -131,6 +131,9 @@ jobs:
       - name: Enable ML auto extension auto-install
         run: az config set extension.dynamic_install_allow_preview=true
 
+      - name: Check data assets
+        run: az ml data list --workspace-name $AZURE_WORKSPACE --resource-group $AZURE_RESOURCE_GROUP
+
       - name: training on experiment data
         run: |
           az ml job create \

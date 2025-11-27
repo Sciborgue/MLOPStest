@@ -62,6 +62,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     steps:
+      - name: Set correct subscription
+        run: az account set --subscription $AZURE_SUBSCRIPTION
+
       - name: Checkout repository
         uses: actions/checkout@main
 
@@ -104,6 +107,36 @@ jobs:
     needs: dataset_creation        
     if: ${{ needs.dataset_creation.result == 'success' }}
     steps:
+      - name: Verify Azure ML workspace and subscription
+        run: |
+          echo "Checking subscription and workspace..."
+          
+          # Show the currently active subscription
+          az account show
+
+          # Make sure the CLI is set to the correct subscription
+          az account set --subscription $AZURE_SUBSCRIPTION
+
+          # Confirm the subscription is correct
+          SUB_ID=$(az account show --query id -o tsv)
+          if [ "$SUB_ID" != "$AZURE_SUBSCRIPTION" ]; then
+              echo "ERROR: Active subscription does not match AZURE_SUBSCRIPTION!"
+              exit 1
+          fi
+
+          # Check if the workspace exists in this subscription & resource group
+          WORKSPACE_CHECK=$(az ml workspace show \
+              --name $AZURE_WORKSPACE \
+              --resource-group $AZURE_RESOURCE_GROUP \
+              --query name -o tsv || echo "NOT_FOUND")
+
+          if [ "$WORKSPACE_CHECK" != "$AZURE_WORKSPACE" ]; then
+              echo "ERROR: Workspace $AZURE_WORKSPACE not found in resource group $AZURE_RESOURCE_GROUP"
+              exit 1
+          fi
+
+          echo "Subscription and workspace match."
+
       - name: Debug environment variables
         run: |
           echo "RG = [$AZURE_RESOURCE_GROUP]"

@@ -27,4 +27,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
 
       - name: Check variables
-        run: az ml data list --workspace-name $AZURE_WORKSPACE --resource-group $AZURE_RESOURCE_GROUP -o table
+        run: |
+          az ml data list --workspace-name $AZURE_WORKSPACE --resource-group $AZURE_RESOURCE_GROUP -o table
+          az account list --output table
+          az account show

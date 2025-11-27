@@ -3,6 +3,11 @@ name: Check data assets
 on:
   workflow_dispatch:
 
+env:
+  AZURE_RESOURCE_GROUP: 'rg-testdiab'
+  AZURE_WORKSPACE: 'mlw-testdiab'
+  AZURE_SUBSCRIPTION: 'd54efa0b-8643-493a-abce-511f6d3fc00b'
+
 jobs:
   check_assets:
     name: Check assets
